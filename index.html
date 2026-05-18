@@ -306,9 +306,103 @@ kbd{font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:12px
 .tag.lime{background:var(--bat-lime);color:#1a2900}
 .tag.yellow{background:var(--bat-yellow);color:#3a2a00}
 
+/* ================= Onboarding modal ================= */
+.onboard-overlay{position:fixed;inset:0;background:rgba(14,43,99,.72);z-index:200;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fadeIn .4s ease}
+.onboard-overlay.hidden{display:none}
+.onboard-card{background:#fff;width:100%;max-width:480px;margin:0 24px;padding:48px 40px 40px;position:relative;box-shadow:0 24px 64px rgba(14,43,99,.25)}
+.onboard-card .ob-brand{font-family:var(--font-sans);font-weight:800;font-size:22px;color:var(--bat-navy);letter-spacing:-.02em;margin-bottom:8px}
+.onboard-card .ob-brand .accent{color:var(--bat-pink)}
+.onboard-card .ob-sub{font-size:14px;color:var(--bat-grey-700);line-height:1.6;margin-bottom:32px}
+.onboard-card .ob-field{margin-bottom:24px}
+.onboard-card .ob-label{display:block;font-family:var(--font-sans);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--bat-grey-700);margin-bottom:10px}
+.onboard-card .lang-pick{display:flex;gap:8px}
+.onboard-card .lang-pick button{flex:1;font-family:var(--font-sans);background:#fff;border:2px solid var(--bat-grey-300);padding:14px 0;font-weight:700;font-size:14px;letter-spacing:.1em;cursor:pointer;transition:.2s;color:var(--bat-grey-700)}
+.onboard-card .lang-pick button:hover{border-color:var(--bat-navy);color:var(--bat-navy)}
+.onboard-card .lang-pick button.active{border-color:var(--bat-pink);background:#fff3f7;color:var(--bat-pink)}
+.onboard-card .ob-input{width:100%;padding:14px 16px;border:2px solid var(--bat-grey-300);font-family:var(--font-kr);font-size:16px;background:#fff;transition:.2s}
+html[lang="en"] .onboard-card .ob-input{font-family:var(--font-sans)}
+.onboard-card .ob-input:focus{outline:none;border-color:var(--bat-pink);box-shadow:0 0 0 4px rgba(231,36,130,.12)}
+.onboard-card .ob-err{font-size:12px;color:var(--bat-pink);margin-top:6px;display:none}
+.onboard-card .ob-err.show{display:block}
+.onboard-card .ob-go{width:100%;background:var(--bat-pink);color:#fff;border:0;padding:16px;font-family:var(--font-sans);font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:.2s;margin-top:8px}
+.onboard-card .ob-go:hover{background:#c91e6f}
+.onboard-card .ob-go:disabled{opacity:.4;cursor:not-allowed}
+
+/* ================= User greeting in topbar ================= */
+.user-greeting{font-family:var(--font-kr);font-size:13px;color:rgba(255,255,255,.85);font-weight:600;letter-spacing:.02em;display:flex;align-items:center;gap:6px;margin-left:8px;padding-left:12px;border-left:2px solid rgba(255,255,255,.2)}
+html[lang="en"] .user-greeting{font-family:var(--font-sans)}
+.user-greeting .greet-name{color:#fff;font-weight:700}
+
+/* ================= Mobile responsive ================= */
+@media(max-width:768px){
+  .topbar{padding:12px 16px;gap:12px;flex-wrap:wrap}
+  .topbar .brand{font-size:18px}
+  .topbar .meta{display:none}
+  .topbar nav{width:100%;justify-content:flex-start;gap:6px;padding-top:8px;border-top:1px solid rgba(255,255,255,.15);margin-left:0}
+  .topbar nav button{padding:6px 10px;font-size:12px}
+  .user-greeting{border-left:0;padding-left:0;margin-left:auto;font-size:12px}
+  .progress{top:auto;bottom:0;position:fixed}
+  .section{padding:32px 20px 80px}
+  .hero{padding:48px 20px;margin:-32px -20px 32px}
+  .hero h1{font-size:36px}
+  .hero .lead{font-size:15px}
+  .hero .border-strip{gap:20px;flex-direction:column;align-items:flex-start}
+  .section-header h1{font-size:36px}
+  .section-header p.lead{font-size:15px}
+  .arch{padding:20px 16px 24px}
+  .arch-row{grid-template-columns:1fr 1fr;gap:10px}
+  .arch-row.three{grid-template-columns:1fr 1fr}
+  .sprint-vis .stages{grid-template-columns:1fr 1fr;gap:8px}
+  .demo-frame .frame-body{padding:16px}
+  .signup{flex-direction:column}
+  .signup .console{min-height:180px;font-size:11px}
+  .quiz{padding:20px}
+  .cab-sim{padding:20px}
+  .card{padding:20px}
+  .vs .col{padding:20px}
+  .footer-nav{flex-direction:column;gap:10px}
+  .footer-nav button{width:100%;text-align:center}
+  .onboard-card{padding:36px 28px 32px}
+  .toc-card{padding:20px 18px}
+}
+@media(max-width:480px){
+  .hero h1{font-size:28px}
+  .section-header h1{font-size:28px}
+  .arch-row{grid-template-columns:1fr}
+  .arch-row.three{grid-template-columns:1fr}
+  .channel-cards{grid-template-columns:1fr}
+  .shop .product{flex-direction:column;text-align:center}
+  .shop .product .img{width:100%;height:80px}
+  .flowmini .step{min-width:auto}
+  .topbar nav button[data-go="3"]{font-size:0;padding:6px 10px}
+  .topbar nav button[data-go="3"]::after{content:"3. Enh vs Svc";font-size:12px}
+  .sprint-vis .stages{grid-template-columns:1fr}
+  .topbar nav button{font-size:11px;padding:5px 8px}
+}
+
 </style>
 </head>
 <body>
+
+<!-- ================= Onboarding modal ================= -->
+<div class="onboard-overlay" id="onboardOverlay">
+  <div class="onboard-card">
+    <div class="ob-brand">BAT <span class="accent">IDT</span></div>
+    <div class="ob-field">
+      <div class="ob-label" data-i18n="ob.lang.label">언어 선택 / Select language</div>
+      <div class="lang-pick" id="obLangPick">
+        <button class="active" data-lang="ko">한국어</button>
+        <button data-lang="en">English</button>
+      </div>
+    </div>
+    <div class="ob-field">
+      <div class="ob-label" data-i18n="ob.name.label">이름</div>
+      <input class="ob-input" id="obNameInput" type="text" maxlength="30" autocomplete="off" spellcheck="false" data-placeholder-ko="예: Andrew Do" data-placeholder-en="e.g. Andrew Do" placeholder="예: Andrew Do">
+      <div class="ob-err" id="obErr" data-i18n="ob.err">이름을 입력해주세요.</div>
+    </div>
+    <button class="ob-go" id="obGo" data-i18n="ob.go">시작하기 →</button>
+  </div>
+</div>
 
 <div class="topbar">
   <div class="brand">BAT</div>
@@ -323,6 +417,7 @@ kbd{font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:12px
       <button class="lang-btn active" data-lang="ko">KO</button>
       <button class="lang-btn" data-lang="en">EN</button>
     </div>
+    <div class="user-greeting" id="userGreeting" style="display:none"><span data-i18n="greet.hi">안녕하세요,</span> <span class="greet-name" id="greetName"></span></div>
   </nav>
 </div>
 <div class="progress"><div class="bar" id="progressBar"></div></div>
@@ -331,10 +426,10 @@ kbd{font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:12px
 <section class="section active" data-idx="0">
   <div class="hero">
     <div class="eyb" data-i18n="s0.eyb">Welcome aboard</div>
-    <h1 data-i18n="s0.h1">성근님, <span class="em">환영합니다.</span></h1>
+    <h1 data-i18n="s0.h1">{{name}}님, <span class="em">환영합니다.</span></h1>
     <p class="lead" data-i18n="s0.lead">한국·일본 이커머스 시스템이 어떻게 돌아가는지, 그리고 IDT팀과 어떻게 협업해야 좋은 결과가 나오는지를 정리했어요. 클릭하고 직접 만져보세요. 천천히 따라오시면 됩니다.</p>
     <div class="border-strip">
-      <div class="who" data-i18n="s0.who.for">For<b>이성근 · Senior Mgr CX</b></div>
+      <div class="who" data-i18n="s0.who.for">For<b>{{name}}</b></div>
       <div class="who" data-i18n="s0.who.from">From<b>Andrew · Consumer IDT</b></div>
       <div class="who" data-i18n="s0.who.markets">Markets<b>Korea · Japan</b></div>
     </div>
@@ -824,7 +919,7 @@ kbd{font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:12px
     </div>
   </div>
 
-  <h2 class="block" data-i18n="s4.checklist.h2">성근님께 드리는 협업 체크리스트</h2>
+  <h2 class="block" data-i18n="s4.checklist.h2">{{name}}님의 협업 체크리스트</h2>
   <div class="card">
     <ul style="margin:0;padding-left:0;list-style:none">
       <li style="padding:10px 0;border-bottom:1px solid var(--bat-grey-200);display:flex;gap:14px;align-items:flex-start"><span style="font-family:var(--font-sans);font-weight:800;color:var(--bat-pink);min-width:24px">01</span><div data-i18n="s4.checklist.li1"><b>요구사항은 Asana에</b> · 메일·DM에 묻히면 결국 사라집니다.</div></li>
@@ -837,7 +932,7 @@ kbd{font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:12px
   </div>
 
   <div class="callout pink" data-i18n="s4.outro">
-    <b>마무리.</b> 이 자료에서 세 가지만 가져가시면 충분합니다 — (1) 프론트는 화면, 백엔드는 데이터와 로직. (2) Enhancement는 Asana, Service는 ServiceNow. (3) 백로그가 차 있을수록 협업이 매끄럽습니다. 나머지는 일하면서 자연스럽게 익히실 거예요. 환영합니다!
+    <b>마무리.</b> 이 자료에서 세 가지만 가져가시면 충분합니다 — (1) 프론트는 화면, 백엔드는 데이터와 로직. (2) Enhancement는 Asana, Service는 ServiceNow. (3) 백로그가 차 있을수록 협업이 매끄럽습니다. 나머지는 일하면서 자연스럽게 익히실 거예요. {{name}}님, 환영합니다!
   </div>
 
   <div class="footer-nav">
@@ -849,6 +944,13 @@ kbd{font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:12px
 <script>
 /* ============== i18n ============== */
 const I18N_EN = {
+  'ob.sub': 'Before we start, a couple of quick questions. Your info stays in this browser only.',
+  'ob.lang.label': 'Language',
+  'ob.name.label': 'Your name',
+  'ob.err': 'Please enter your name.',
+  'ob.go': 'Get started →',
+  'greet.hi': 'Hi,',
+
   'meta': 'CONSUMER IDT<br><b>Induction Pack</b>',
   'nav.intro': 'Intro',
   'nav.s1': '1. Web basics',
@@ -857,9 +959,9 @@ const I18N_EN = {
   'nav.s4': '4. Ways of working',
 
   's0.eyb': 'Welcome aboard',
-  's0.h1': 'Sungkeun, <span class="em">welcome.</span>',
+  's0.h1': '{{name}}, <span class="em">welcome.</span>',
   's0.lead': 'How our Korea·Japan e-commerce systems actually work, and how to collaborate with the IDT team to get the best out of us — all in one pack. Click around and try things. Take your time.',
-  's0.who.for': 'For<b>Sungkeun Lee · Senior Mgr CX</b>',
+  's0.who.for': 'For<b>{{name}}</b>',
   's0.who.from': 'From<b>Andrew · Consumer IDT</b>',
   's0.who.markets': 'Markets<b>Korea · Japan</b>',
   's0.toc.h2': 'How is this pack laid out?',
@@ -1092,14 +1194,14 @@ const I18N_EN = {
   's4.backlog.risky.li1': 'No room for engineering to bundle',
   's4.backlog.risky.li2': 'Dependencies → discovered mid-sprint → schedule slips',
   's4.backlog.risky.li3': 'The genuinely important work keeps getting pushed back',
-  's4.checklist.h2': 'A short collaboration checklist for you',
+  's4.checklist.h2': '{{name}}\'s collaboration checklist',
   's4.checklist.li1': '<b>Requirements go in Asana</b> · email and DMs eventually swallow them.',
   's4.checklist.li2': '<b>Bring the "why"</b> · business impact and a measurable expected outcome shorten the prioritisation conversation a lot.',
   's4.checklist.li3': '<b>Respect the sprint cut-off</b> · anything late shifts to the next train automatically (it\'s not us pushing it back).',
   's4.checklist.li4': '<b>Ops issues to ServiceNow</b> · bugs and incidents in Asana miss SLA and get buried.',
   's4.checklist.li5': '<b>Flag big work early</b> · a single line — "could we do something this big next quarter?" — lets us start CAB 3 setup early.',
   's4.checklist.li6': '<b>If unsure, just ask</b> · drop a one-line "is this on your side?" to me (Andrew) or Woonsung and we\'ll point you the right way.',
-  's4.outro': '<b>Closing.</b> If you take just three things from this pack: (1) frontend is the screen, backend is the truth. (2) Enhancement → Asana, Service → ServiceNow. (3) The fuller the backlog, the smoother the collaboration. The rest you\'ll pick up naturally as we work together. Welcome aboard, Sungkeun.',
+  's4.outro': '<b>Closing.</b> If you take just three things from this pack: (1) frontend is the screen, backend is the truth. (2) Enhancement → Asana, Service → ServiceNow. (3) The fuller the backlog, the smoother the collaboration. The rest you\'ll pick up naturally as we work together. Welcome aboard, {{name}}!',
   's4.prev': '← Back to Enhancement vs Service',
   's4.next': 'Back to top ↑'
 };
@@ -1108,6 +1210,13 @@ let currentLang = 'ko';
 let originalKO = null;
 let lastSignupKind = null;
 let lastTamperKind = null;
+let userName = localStorage.getItem('idt_user_name') || '';
+let userLang = localStorage.getItem('idt_user_lang') || '';
+let activeNodeId = null;
+
+function applyName(html){
+  return html.replace(/\{\{name\}\}/g, userName || '---');
+}
 
 function setLang(lang){
   if(!originalKO){
@@ -1117,18 +1226,28 @@ function setLang(lang){
     });
   }
   currentLang = lang;
+  localStorage.setItem('idt_user_lang', lang);
   document.documentElement.lang = lang;
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const key = el.dataset.i18n;
+    let val;
     if(lang === 'ko'){
-      el.innerHTML = originalKO[key];
+      val = originalKO[key];
     } else if(I18N_EN[key] !== undefined){
-      el.innerHTML = I18N_EN[key];
+      val = I18N_EN[key];
+    } else {
+      val = originalKO[key];
     }
+    if(val !== undefined) el.innerHTML = applyName(val);
   });
   document.querySelectorAll('.lang-toggle button').forEach(b=>{
     b.classList.toggle('active', b.dataset.lang === lang);
   });
+  // update onboarding placeholder
+  const obInput = document.getElementById('obNameInput');
+  if(obInput){
+    obInput.placeholder = obInput.getAttribute('data-placeholder-'+lang) || '';
+  }
   // re-render any dynamic content that already depends on language
   refreshArchDetail();
   if(lastSignupKind) renderSignup(lastSignupKind);
@@ -1138,6 +1257,71 @@ function setLang(lang){
 document.querySelectorAll('.lang-toggle button').forEach(b=>{
   b.addEventListener('click',()=>setLang(b.dataset.lang));
 });
+
+/* ============== Onboarding ============== */
+function showGreeting(){
+  const el = document.getElementById('userGreeting');
+  const nameEl = document.getElementById('greetName');
+  if(userName){
+    nameEl.textContent = userName;
+    el.style.display = '';
+  }
+}
+
+function dismissOnboard(){
+  document.getElementById('onboardOverlay').classList.add('hidden');
+  showGreeting();
+}
+
+// Onboard: language pick
+let obLang = 'ko';
+document.querySelectorAll('#obLangPick button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('#obLangPick button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    obLang = b.dataset.lang;
+    // switch the entire page language immediately so modal text updates
+    setLang(obLang);
+  });
+});
+
+// Onboard: submit
+document.getElementById('obGo').addEventListener('click',()=>{
+  const input = document.getElementById('obNameInput');
+  const err = document.getElementById('obErr');
+  const val = input.value.trim();
+  if(!val){
+    err.classList.add('show');
+    input.focus();
+    return;
+  }
+  err.classList.remove('show');
+  userName = val;
+  localStorage.setItem('idt_user_name', userName);
+  localStorage.setItem('idt_user_lang', obLang);
+  setLang(obLang);
+  dismissOnboard();
+});
+
+// Onboard: enter key on name input
+document.getElementById('obNameInput').addEventListener('keydown',e=>{
+  if(e.key === 'Enter') document.getElementById('obGo').click();
+});
+
+// Onboard: hide error on input
+document.getElementById('obNameInput').addEventListener('input',()=>{
+  document.getElementById('obErr').classList.remove('show');
+});
+
+// Auto-restore: if we already have name + lang, skip modal
+if(userName && userLang){
+  obLang = userLang;
+  setLang(userLang);
+  dismissOnboard();
+} else {
+  // first visit — show modal, default to KO
+  setLang('ko');
+}
 
 /* ============== Navigation ============== */
 const sections=[...document.querySelectorAll('.section')];
@@ -1425,7 +1609,7 @@ const NODE_INFO={
   }
 };
 
-let activeNodeId = null;
+
 
 function renderArchDetail(id){
   const info=NODE_INFO[id];
