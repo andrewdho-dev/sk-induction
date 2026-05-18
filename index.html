@@ -50,6 +50,21 @@ html[lang="en"] .topbar nav button{font-family:var(--font-sans)}
 .lang-toggle button:hover{color:#fff}
 .lang-toggle button.active{background:#fff;color:var(--bat-navy)}
 
+/* ================= Hamburger (mobile only) ================= */
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;background:transparent;border:1px solid rgba(255,255,255,.25);cursor:pointer;padding:7px;flex-shrink:0;transition:.2s}
+.hamburger span{display:block;height:2px;background:#fff;border-radius:1px;transition:transform .25s ease,opacity .25s ease}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ================= Mobile nav drawer ================= */
+.mobile-drawer{display:none;position:fixed;top:48px;left:0;right:0;background:var(--bat-navy);z-index:49;flex-direction:column;padding:8px 16px 16px;gap:6px;border-top:1px solid rgba(255,255,255,.12);box-shadow:0 8px 20px rgba(14,43,99,.3)}
+.mobile-drawer.open{display:flex}
+.mobile-drawer button{font-family:var(--font-kr);background:transparent;color:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.15);padding:12px 16px;font-size:14px;font-weight:600;cursor:pointer;text-align:left;transition:.2s;width:100%}
+html[lang="en"] .mobile-drawer button{font-family:var(--font-sans)}
+.mobile-drawer button:hover{background:rgba(255,255,255,.08);color:#fff}
+.mobile-drawer button.active{background:var(--bat-pink);color:#fff;border-color:var(--bat-pink)}
+
 /* ================= Progress bar ================= */
 .progress{height:4px;background:rgba(231,36,130,.15);position:sticky;top:64px;z-index:49}
 .progress .bar{height:100%;background:var(--bat-pink);width:0%;transition:width .4s ease}
@@ -335,13 +350,21 @@ html[lang="en"] .user-greeting{font-family:var(--font-sans)}
 
 /* ================= Mobile responsive ================= */
 @media(max-width:768px){
-  .topbar{padding:12px 16px;gap:12px;flex-wrap:wrap}
-  .topbar .brand{font-size:18px}
+  /* topbar: single slim row */
+  .topbar{padding:8px 16px;gap:0;flex-wrap:nowrap;align-items:center}
+  .topbar .brand{font-size:17px}
   .topbar .meta{display:none}
-  .topbar nav{width:100%;justify-content:flex-start;gap:6px;padding-top:8px;border-top:1px solid rgba(255,255,255,.15);margin-left:0}
-  .topbar nav button{padding:6px 10px;font-size:12px}
-  .user-greeting{border-left:0;padding-left:0;margin-left:auto;font-size:12px}
-  .progress{top:auto;bottom:0;position:fixed}
+  /* hide page nav buttons; show only lang-toggle + hamburger */
+  .topbar nav{margin-left:auto;display:flex;gap:8px;flex-wrap:nowrap;align-items:center;padding-top:0;border-top:none;width:auto}
+  .topbar nav > button[data-go]{display:none}
+  /* compact lang-toggle on mobile */
+  .lang-toggle{margin-left:0;border-radius:0}
+  .lang-toggle button{padding:5px 9px;font-size:10px;letter-spacing:.12em}
+  /* gap between lang-toggle and hamburger */
+  .hamburger{display:flex;margin-left:10px}
+  /* greeting moves inside drawer on mobile */
+  .topbar .user-greeting{display:none!important}
+  .progress{top:48px}
   .section{padding:32px 20px 80px}
   .hero{padding:48px 20px;margin:-32px -20px 32px}
   .hero h1{font-size:36px}
@@ -374,10 +397,7 @@ html[lang="en"] .user-greeting{font-family:var(--font-sans)}
   .shop .product{flex-direction:column;text-align:center}
   .shop .product .img{width:100%;height:80px}
   .flowmini .step{min-width:auto}
-  .topbar nav button[data-go="3"]{font-size:0;padding:6px 10px}
-  .topbar nav button[data-go="3"]::after{content:"3. Enh vs Svc";font-size:12px}
   .sprint-vis .stages{grid-template-columns:1fr}
-  .topbar nav button{font-size:11px;padding:5px 8px}
 }
 
 </style>
@@ -419,6 +439,16 @@ html[lang="en"] .user-greeting{font-family:var(--font-sans)}
     </div>
     <div class="user-greeting" id="userGreeting" style="display:none"><span data-i18n="greet.hi">안녕하세요,</span> <span class="greet-name" id="greetName"></span></div>
   </nav>
+  <button class="hamburger" id="hamburgerBtn" aria-label="메뉴 열기" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+<div class="mobile-drawer" id="mobileDrawer">
+  <button data-go="0" class="active" data-i18n="nav.intro">소개</button>
+  <button data-go="1" data-i18n="nav.s1">1. 웹 기초</button>
+  <button data-go="2" data-i18n="nav.s2">2. 아키텍쳐</button>
+  <button data-go="3" data-i18n="nav.s3">3. Enhancement vs Service</button>
+  <button data-go="4" data-i18n="nav.s4">4. 일하는 방법</button>
 </div>
 <div class="progress"><div class="bar" id="progressBar"></div></div>
 
@@ -1326,14 +1356,41 @@ if(userName && userLang){
 /* ============== Navigation ============== */
 const sections=[...document.querySelectorAll('.section')];
 const navBtns=[...document.querySelectorAll('.topbar nav button[data-go]')];
+const drawerBtns=[...document.querySelectorAll('#mobileDrawer button[data-go]')];
+
+function closeMobileDrawer(){
+  const drawer=document.getElementById('mobileDrawer');
+  const btn=document.getElementById('hamburgerBtn');
+  drawer.classList.remove('open');
+  btn.classList.remove('open');
+  btn.setAttribute('aria-expanded','false');
+}
+
 function go(i){
   sections.forEach((s,k)=>s.classList.toggle('active',k===i));
   navBtns.forEach((b,k)=>b.classList.toggle('active',k===i));
+  drawerBtns.forEach((b,k)=>b.classList.toggle('active',k===i));
   document.getElementById('progressBar').style.width=((i)/(sections.length-1)*100)+'%';
   window.scrollTo({top:0,behavior:'smooth'});
+  closeMobileDrawer();
 }
 document.querySelectorAll('[data-go]').forEach(el=>{
   el.addEventListener('click',()=>go(parseInt(el.dataset.go,10)));
+});
+
+/* ============== Hamburger ============== */
+document.getElementById('hamburgerBtn').addEventListener('click',()=>{
+  const drawer=document.getElementById('mobileDrawer');
+  const btn=document.getElementById('hamburgerBtn');
+  const isOpen=drawer.classList.toggle('open');
+  btn.classList.toggle('open',isOpen);
+  btn.setAttribute('aria-expanded',String(isOpen));
+});
+// Close drawer when tapping outside
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#mobileDrawer')&&!e.target.closest('#hamburgerBtn')){
+    closeMobileDrawer();
+  }
 });
 
 /* ============== S1: Signup demo ============== */
